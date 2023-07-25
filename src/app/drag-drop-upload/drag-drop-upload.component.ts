@@ -15,6 +15,9 @@ interface FileWithProgress extends File {
 })
 export class DragDropUploadComponent {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  // Replace the URL below with your server's upload endpoint
+  private uploadURL = 'http://localhost:8080/upload';
+
   files: FileWithProgress[] = [];
 
   constructor(private http: HttpClient) {}
@@ -92,10 +95,7 @@ export class DragDropUploadComponent {
         const formData = new FormData();
         formData.append('file', file, file.name);
 
-        // Replace the URL below with your server's upload endpoint
-        const uploadURL = 'http://localhost:8080/upload';
-
-        this.http.post(uploadURL, formData, {
+        this.http.post(this.uploadURL, formData, {
           reportProgress: true,
           observe: 'events'
         }).subscribe(
@@ -110,7 +110,7 @@ export class DragDropUploadComponent {
             }
           },
           (error) => {
-            console.error('Upload error:', error);
+            console.error('Upload failed:', error);
             file.uploading = false;
             file.progress = 0;
             file.uploadError = true;
