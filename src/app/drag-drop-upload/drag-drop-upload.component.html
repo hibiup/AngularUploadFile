@@ -1,0 +1,29 @@
+<div class="drag-drop-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)">
+  <div class="message-container">
+    <p>Drag and drop files here, or</p>
+    <a class="file-input-link" (click)="fileInput.click()">Click to select files from computer</a>
+  </div>
+  <input type="file" style="display: none" #fileInput (change)="onFileSelected($event)" multiple>
+
+  <div class="uploaded-files" *ngIf="files.length > 0">
+    <div class="uploaded-file" *ngFor="let file of files; let i = index">
+      <div class="file-info">
+        <span>{{ file.name }}</span>
+        <button class="remove-btn" (click)="removeFile(i)">Remove</button>
+      </div>
+      <div *ngIf="file.uploading">
+        <span class="upload-progress">Uploading... {{ file.progress }}%</span>
+        <div class="upload-progress-bar" [style.width]="file.progress + '%'"></div>
+      </div>
+      <div *ngIf="file.uploadError">
+        <span class="upload-error">Upload Error</span>
+        <button class="retry-btn" (click)="retryUpload(file)">Retry</button>
+      </div>
+    </div>
+
+    <div class="buttons-container">
+      <button (click)="clearFiles()">Clear All</button>
+      <button (click)="uploadFiles()">Upload</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+.drag-drop-container {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  border-radius: 6px;
+}
+
+.file-input-link {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.uploaded-file {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.uploaded-file .file-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.uploaded-file span {
+  margin-right: 10px;
+}
+
+.uploaded-file .remove-btn, .uploaded-file .retry-btn {
+  border: none;
+  background-color: transparent;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
+
+.uploaded-file .upload-progress-bar {
+  height: 5px;
+  background-color: #007bff;
+}
+
+.drag-drop-container.dragover {
+  border-color: #007bff;
+  background-color: #f0f0f0;
+}
+
+.drag-drop-container.dragover .message-container {
+  border: 2px dashed #007bff;
+}
+
+.drag-drop-container.dragover p {
+  cursor: copy;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.buttons-container button {
+  margin: 0 5px; /* Reduced margin from 10px to 5px */
+}
