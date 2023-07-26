@@ -92,67 +92,46 @@ export class DragDropUploadComponent {
     this.files.forEach((file) => {
       if (!file.uploading && !file.uploadError) {
         file.uploading = true;
-        const formData = new FormData();
-        formData.append('file', file, file.name);
 
-        this.http.post(this.uploadURL, formData, {
-          reportProgress: true,
-          observe: 'events'
-        }).subscribe(
-          (event) => {
-            if (event.type === HttpEventType.UploadProgress) {
-              file.progress = Math.round((100 * event.loaded) / event.total!);
-            } else if (event.type === HttpEventType.Response) {
-              console.log('Upload success:', event.body);
-              file.uploading = false;
-              file.progress = 0;
-              // Handle successful upload response here if needed
-            }
-          },
-          (error) => {
-            console.error('Upload failed:', error);
-            file.uploading = false;
-            file.progress = 0;
-            file.uploadError = true;
-          }
-        );
+        this._uploadFile(file);
       }
     });
   }
 
-  retryUpload(file: FileWithProgress) {
-    if (file.uploadError) {
-      file.uploading = true;
-      file.uploadError = false;
-      file.progress = 0;
+  private _uploadFile(file: FileWithProgress){
+    const formData = new FormData();
+    formData.append('file', file, file.name);
 
-      const formData = new FormData();
-      formData.append('file', file, file.name);
-
-      // Replace the URL below with your server's upload endpoint
-      const uploadURL = 'http://localhost:8080/upload';
-
-      this.http.post(uploadURL, formData, {
-        reportProgress: true,
-        observe: 'events'
-      }).subscribe(
-        (event) => {
-          if (event.type === HttpEventType.UploadProgress) {
-            file.progress = Math.round((100 * event.loaded) / event.total!);
-          } else if (event.type === HttpEventType.Response) {
-            console.log('Upload success:', event.body);
-            file.uploading = false;
-            file.progress = 0;
-            // Handle successful upload response here if needed
-          }
-        },
-        (error) => {
-          console.error('Upload error:', error);
+    this.http.post(this.uploadURL, formData, {
+      reportProgress: true,
+      observe: 'events'
+    }).subscribe(
+      (event) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          file.progress = Math.round((100 * event.loaded) / event.total!);
+        } else if (event.type === HttpEventType.Response) {
+          console.log('Upload success:', event.body);
           file.uploading = false;
           file.progress = 0;
-          file.uploadError = true;
+          // Handle successful upload response here if needed
         }
-      );
+      },
+      (error) => {
+        console.error('Upload error:', error);
+        file.uploading = false;
+        file.progress = 0;
+        file.uploadError = true;
+      }
+    );
+  }
+
+  retryUpload(file: FileWithProgress) {
+    if (file.uploadError) {
+      file.uploadError = false;
+      file.progress = 0;
+      file.uploading = true;
+
+      this._uploadFile(file);
     }
   }
 }
