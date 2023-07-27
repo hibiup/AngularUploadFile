@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 
-interface FileWithProgress extends File {
+export interface FileWithProgress extends File {
   uploading: boolean;
   progress: number;
   uploadError: boolean;
@@ -114,6 +114,7 @@ export class DragDropUploadComponent {
           file.uploading = false;
           file.progress = 0;
           // Handle successful upload response here if needed
+          file.uploadError = false;
         }
       },
       (error) => {
@@ -127,7 +128,7 @@ export class DragDropUploadComponent {
 
   retryUpload(file: FileWithProgress) {
     if (file.uploadError) {
-      file.uploadError = false;
+      //file.uploadError = false;
       file.progress = 0;
       file.uploading = true;
 
