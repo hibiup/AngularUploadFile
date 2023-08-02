@@ -45,3 +45,4 @@ node_modules
 .vscode
 .angular
 .coverage
+package-lock.json
