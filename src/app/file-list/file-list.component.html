@@ -1,0 +1,18 @@
+<li *ngFor="let file of fileList; let i = index" >
+    <ng-template [ngIf]="file.isFolder" [ngIfElse]="isFile">
+        <a href="#{{file.path}}" class="nav-link px-0 fs-6 bi-folder2" data-bs-toggle="collapse" (click)="expendFolder(file)">
+            <span class="ms-1 d-none d-sm-inline">{{ file.displayName }}</span>
+        </a>
+        <ul class="collapse nav flex-column ms-2" id="{{file.path}}" [attr.data-bs-parent]="'#'+file.parentPath">
+            <app-file-list [fileList]=file.subList></app-file-list>
+        </ul>
+      </ng-template>
+      
+      <ng-template #isFile>
+        <div>
+            <a href="#" class="nav-link px-0 fs-7 bi-file-earmark">
+                <span class="ms-1 d-none d-sm-inline">{{ file.displayName}}</span>
+            </a>
+        </div>
+      </ng-template>
+</li>
